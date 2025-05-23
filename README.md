@@ -1,2 +1,3 @@
 # Chiikawa Timer
-A cute and customizable Pomodoro timer inspired by Chiikawa anime. Boost your productivity with Chiikawa, Hachiware, and Usagi (っ'-')╮=͟͟͞͞💖
+
+A Pomodoro timer inspired by the Chiikawa anime. Boost your productivity with Chiikawa, Hachiware, and Usagi (っ'-')╮=͟͟͞͞💖

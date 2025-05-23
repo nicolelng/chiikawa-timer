@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Chiikawa Timer - A cute pomodoro timer to boost your productivity
+    </title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="https://necolas.github.io/normalize.css/8.0.1/normalize.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=VT323&family=Work+Sans&family=Zen+Maru+Gothic&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Background Overlay -->
+    <div class="bg-gradient-1"></div>
+
+    <!-- Settings -->
+    <div class="modal-overlay"></div>
+    <aside class="settings" aria-labelledby="settings-title">
+
+      <!-- Settings: Header -->
+      <header class="settings-header">
+        <h1 id="settings-title">Settings</h1>
+        <button class="settings-close-btn">
+          <span>&#10006;</span>
+        </button>
+      </header>
+
+      <!-- Settings: Duration Minutes -->
+      <section>
+        <h2 class="settings-heading">Custom Timer Duration</h2>
+        <p class="setting-description">Changes will reset the current timer.</p>
+        <form id="duration-form">
+          <fieldset>
+            <div class="duration-inputs">
+              <label for="pomodoro-duration">
+                Pomodoro
+                <input data-timer="POMODORO" type="number" id="pomodoro-duration" name="pomodoro" min="1" max="60" value="25" step="1" />
+              </label>
+
+              <label for="short-break-duration">
+                Short Break
+                <input data-timer="SHORT_BREAK" type="number" id="short-break-duration" name="shortBreak" min="1" max="60" value="5" step="1" />
+              </label>
+
+              <label for="long-break-duration">
+                Long Break
+                <input data-timer="LONG_BREAK" type="number" id="long-break-duration" name="longBreak" min="1" max="60" value="10" step="1" />
+              </label>
+            </div>
+          </fieldset>
+        </form>
+        <button class="reset-timer-durations-btn accent-btn btn">Reset to default timer values</button>
+      </section>
+
+      <!-- Settings: Timer Auto Start -->
+      <!-- <section aria-labelledby="timer-title">
+        <h2 class="settings-heading" id="timer-title">Timer Auto-Start</h3>
+        <p class="setting-description">The timer automatically runs in this sequence: Pomodoro, short break, repeat 4 times, then a long break.</p>
+        <label class="switch-label">
+          <div class="switch">
+            <input id="timer-auto-toggle" type="checkbox"/>
+            <span class="slider round"></span>
+          </div>
+          <span class="label-text">Auto-start next timer segment</span>
+        </label>
+      </section> -->
+
+      <!-- Settings: Notification Sound -->
+      <section aria-labelledby="sound-title">
+        <h2 class="settings-heading" id="sound-title">Sound and Notifications</h3>
+        <div class="sound-options"></div>
+
+      <!-- Settings: Sound and Notifications -->
+        <label class="switch-label">
+          <div class="switch">
+            <input id="mute-toggle" type="checkbox"/>
+            <span class="slider round"></span>
+          </div>
+          <span class="label-text">Mute all sounds</span>
+        </label>
+      </section>
+
+      <!-- Settings: Themes -->
+      <section aria-labelledby="themes-title">
+        <h2 class="settings-heading" id="themes-title">Themes</h2>
+        
+        <!-- Theme List -->
+        <ul class="theme-options"></ul>
+        
+        <!-- Randomize Theme Option -->
+        <label class="switch-label">
+          <div class="switch">
+            <input id="randomize-theme-toggle" type="checkbox"/>
+            <span class="slider round"></span>
+          </div>
+          <span class="label-text">Change Theme When Timer Ends</span>
+        </label>
+      </section>
+
+      <!-- Settings: Task History -->
+      <section aria-labelledby="task-history-title">
+        <h2 class="settings-heading" id="task-history-title">Task History</h2>
+        
+        <ul class="task-history"></ul>
+        <button class="delete-task-history-btn accent-btn btn">Delete History</button>
+      </section>
+    </aside>
+
+    <!-- Header -->
+    <header class="site-header">
+      <span class="title">
+        <img src="images/site-icon.png" alt="" />
+        <h1>Chiikawa Timer</h1>
+      </span>
+      <button class="settings-btn" aria-label="Settings">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M24 13.616v-3.232c-1.651-.587-2.694-.752-3.219-2.019v-.001c-.527-1.271.1-2.134.847-3.707l-2.285-2.285c-1.561.742-2.433 1.375-3.707.847h-.001c-1.269-.526-1.435-1.576-2.019-3.219h-3.232c-.582 1.635-.749 2.692-2.019 3.219h-.001c-1.271.528-2.132-.098-3.707-.847l-2.285 2.285c.745 1.568 1.375 2.434.847 3.707-.527 1.271-1.584 1.438-3.219 2.02v3.232c1.632.58 2.692.749 3.219 2.019.53 1.282-.114 2.166-.847 3.707l2.285 2.286c1.562-.743 2.434-1.375 3.707-.847h.001c1.27.526 1.436 1.579 2.019 3.219h3.232c.582-1.636.75-2.69 2.027-3.222h.001c1.262-.524 2.12.101 3.698.851l2.285-2.286c-.744-1.563-1.375-2.433-.848-3.706.527-1.271 1.588-1.44 3.221-2.021zm-12 2.384c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4z"
+          />
+        </svg>
+      </button>
+    </header>
+
+    <!-- MAIN TIMER INTERFACE -->
+    <main>
+
+      <!-- TASK INPUT -->
+      <input
+        type="text"
+        class="task-input"
+        placeholder="What are you working on?"
+      />
+      
+      <!-- TIMER DISPLAY -->
+      <h1 class="timer-display">25:00</h1>
+
+      <!-- TIMER CONTROLS -->
+      <div class="timer-controls">
+        <button class="start-btn btn">&#9658; Start</button>
+        <button class="reset-btn" aria-label="Reset">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M13.5 2c-5.621 0-10.211 4.443-10.475 10h-3.025l5 6.625 5-6.625h-2.975c.257-3.351 3.06-6 6.475-6 3.584 0 6.5 2.916 6.5 6.5s-2.916 6.5-6.5 6.5c-1.863 0-3.542-.793-4.728-2.053l-2.427 3.216c1.877 1.754 4.389 2.837 7.155 2.837 5.79 0 10.5-4.71 10.5-10.5s-4.71-10.5-10.5-10.5z"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- AVATAR -->
+      <img class="avatar" src="gifs/1.gif" alt="" />
+
+      <!-- TIMER MODES -->
+      <div class="timer-modes">
+        <button id="mode-btn-pomodoro" data-timer="POMODORO" class="selected-mode mode btn">
+          Pomodoro
+        </button>
+        <button id="mode-btn-short" data-timer="SHORT_BREAK" class="mode btn">Short Break</button>
+        <button id="mode-btn-long" data-timer="LONG_BREAK" class="mode btn">Long Break</button>
+      </div>
+      
+    </main>
+
+    <!-- Footer -->
+    <footer hidden>
+      <span></span>
+      <span class="title">
+        <img src="images/hachi.png" alt="" />
+        <h1>
+          made by
+          <a class="link" href="https://github.com/nicolelng" target="_blank"
+            >@nicolelng</a
+          >
+        </h1>
+      </span>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>

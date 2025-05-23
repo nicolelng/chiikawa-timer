@@ -1,0 +1,614 @@
+/* ====================================================
+  Variables
+==================================================== */
+:root {
+  /* delete below colors later */
+  --color-1: #bd9aa0;
+  --color-1b: #775a5e;
+
+  --color-2: #9aadc4;
+  --color-2b: #374d68;
+
+  --color-3: #808394;
+  --color-3b: rgb(55, 57, 75);
+
+  --color-4: #9dad8b;
+  --color-4b: rgb(79, 104, 76);
+
+  --color-5: #b2a2c4;
+  --color-5b: #756688;
+
+  --main-font-color: #ffffff;
+  --bg-color: var(--color-1);
+  --accent-color: var(--color-1b);
+
+  --font-size: 16px;
+  --main-font: "Zen Maru Gothic", sans-serif;
+  --timer-font: Courier, monospace;
+
+  --main-container-width: 60vw;
+}
+
+/* ====================================================
+  Gradients
+==================================================== */
+
+.bg-gradient-3 {
+  background: hsla(216, 41%, 79%, 1);
+
+  background: radial-gradient(
+    circle,
+    hsla(216, 41%, 79%, 1) 0%,
+    hsla(215, 23%, 62%, 1) 100%
+  );
+
+  background: -moz-radial-gradient(
+    circle,
+    hsla(216, 41%, 79%, 1) 0%,
+    hsla(215, 23%, 62%, 1) 100%
+  );
+
+  background: -webkit-radial-gradient(
+    circle,
+    hsla(216, 41%, 79%, 1) 0%,
+    hsla(215, 23%, 62%, 1) 100%
+  );
+
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#B5C6E0", endColorstr="#899BB5", GradientType=1 );
+}
+
+/* ====================================================
+  Base Styles
+==================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+a,
+button,
+figure {
+  all: unset;
+}
+
+ul,
+li {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+button,
+a {
+  cursor: pointer;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+body {
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  max-height: 100vh;
+  background: var(--bg-color);
+  font-family: var(--main-font);
+  font-size: var(--font-size);
+  color: var(--main-font-color);
+}
+
+/* ====================================================
+  Text Elements
+==================================================== */
+.btn {
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  will-change: transform;
+  display: inline-block;
+  outline: none;
+  background: var(--accent-color);
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  line-height: 1;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  color: #ffffff;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn:disabled {
+  pointer-events: none;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  box-shadow: none;
+  transform: translateY(0);
+}
+
+.link {
+  color: var(--accent-color);
+  transition: all 0.2s ease;
+}
+
+.link:hover {
+  color: var(--accent-color);
+  filter: brightness(120%);
+}
+
+/* ====================================================
+  Layout
+==================================================== */
+.bg-overlay {
+  position: absolute;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.1;
+  z-index: -1;
+}
+
+.bg-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+}
+
+header.site-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5vh;
+  max-width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.title h1 {
+  font-size: 1.2rem;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--main-container-width);
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5vh;
+  max-width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  /* background: var(--accent-color); */
+}
+
+footer .title img {
+  width: 24px;
+  height: 24px;
+}
+
+footer .title h1 {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+/* ====================================================
+  Site Header
+==================================================== */
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.title img {
+  display: block;
+  height: 100%;
+}
+
+.settings-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 100%;
+  transition: all 0.2s ease;
+  fill: var(--accent-color);
+}
+
+.settings-btn:hover {
+  filter: brightness(130%);
+}
+
+/* ====================================================
+  Main Content
+==================================================== */
+
+.task-input {
+  all: unset;
+  padding: 1rem;
+  width: 100%;
+  line-height: normal;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-align: center;
+  color: var(--accent-color);
+  opacity: 0.8;
+}
+
+::placeholder {
+  color: var(--accent-color);
+  opacity: 0.7;
+}
+
+::-webkit-input-placeholder {
+  color: var(--accent-color);
+  opacity: 0.7;
+}
+
+.avatar {
+  display: block;
+  object-fit: cover;
+  width: 15vw;
+  height: 15vw;
+  border-radius: 100%;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+  margin: 3rem 0;
+}
+
+.timer-modes {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.timer-modes .mode {
+  text-transform: lowercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: white;
+  opacity: 0.3;
+  background: var(--accent-color);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+}
+
+.timer-modes .selected-mode {
+  color: white;
+  opacity: 1;
+}
+
+.timer-modes .selected-mode:hover {
+  filter: brightness(120%);
+}
+
+.timer-display {
+  font-family: var(--timer-font);
+  color: var(--accent-color);
+  text-align: center;
+  font-size: 8rem;
+  font-weight: 600;
+}
+
+.timer-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.timer-controls .start-btn {
+  height: 4rem;
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+}
+
+.start-btn:hover {
+  filter: brightness(120%);
+}
+
+.reset-btn svg {
+  fill: var(--accent-color);
+  height: 2.5rem;
+  width: 2.5rem;
+  transition: transform 0.3s ease;
+}
+
+.reset-btn svg:hover {
+  transform: rotate(-50deg);
+  filter: brightness(120%);
+}
+
+/* ====================================================
+  Settings Modal
+==================================================== */
+.modal-overlay {
+  visibility: hidden;
+  opacity: 0;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 99;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay-open {
+  visibility: visible;
+  opacity: 1;
+}
+
+.settings {
+  visibility: hidden;
+  opacity: 0;
+
+  position: absolute;
+  top: 0;
+  right: -50vw;
+  z-index: 99;
+
+  width: 40vw;
+  height: 100vh;
+  padding: 1.5rem;
+
+  background: var(--accent-color);
+  transition: all 0.3s ease;
+}
+
+.settings-open {
+  opacity: 1;
+  right: 0vw;
+}
+
+.settings-closed {
+  opacity: 0;
+  right: -50vw;
+}
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.settings-header #settings-title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.settings-close-btn {
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.settings-close-btn:hover {
+  color: var(--bg-color);
+}
+
+.settings-close-btn span {
+  font-size: 1.5rem;
+}
+
+.settings section:not(:first-child) {
+  margin-bottom: 2rem;
+}
+
+.settings .settings-heading {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 1rem 0rem;
+}
+
+/* Task History section heading */
+.settings > section:not(:first-child) > h1 {
+  margin-top: 2rem;
+}
+
+.setting-description {
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+
+form#duration-form {
+  margin-bottom: 1rem;
+}
+
+form#duration-form fieldset {
+  all: unset;
+}
+
+.duration-inputs {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.duration-inputs label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.duration-inputs input {
+  letter-spacing: 1px;
+  color: var(--accent-color);
+  min-width: 8vw;
+  padding: 0.25rem;
+}
+
+.duration-inputs input:focus {
+  outline: none;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #bbbbbb;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: var(--bg-color);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--bg-color);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.switch-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.switch-label .label-text {
+  font-weight: 500;
+}
+
+.sound-options {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.sound-option > * {
+  cursor: pointer;
+}
+
+.sound-option label {
+  margin-left: 0.25rem;
+}
+
+.theme-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 1rem;
+}
+
+.theme-options li button {
+  width: 100%;
+}
+
+.theme-options li {
+  flex: 1;
+  text-align: center;
+}
+
+.theme-option img {
+  display: block;
+  object-fit: cover;
+  width: 100%;
+  height: 8vh;
+  margin: 0 auto;
+  border-radius: 0.5rem;
+  opacity: 0.45;
+}
+
+.theme-option.selected img {
+  opacity: 1 !important;
+  border-radius: 0.5rem;
+  border: 0.25rem solid var(--main-font-color);
+}
+
+.task-history {
+  margin: 1rem 0;
+  line-height: 1.8;
+}
+
+.accent-btn {
+  background: var(--bg-color);
+  color: var(--accent-color);
+}
+
+.accent-btn:hover {
+  opacity: 0.5;
+}
+
+@media only screen and (max-width: 1600px) {
+  .avatar {
+    width: 20vw;
+    height: 20vw;
+  }
+}
