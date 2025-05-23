@@ -287,8 +287,8 @@ footer .title h1 {
 .avatar {
   display: block;
   object-fit: cover;
-  width: 15vw;
-  height: 15vw;
+  width: 50vw;
+  height: 50vw;
   border-radius: 100%;
   box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
   margin: 3rem 0;
@@ -385,7 +385,7 @@ footer .title h1 {
   right: -50vw;
   z-index: 99;
 
-  width: 40vw;
+  width: 70vw;
   height: 100vh;
   padding: 1.5rem;
 
@@ -471,7 +471,7 @@ form#duration-form fieldset {
 .duration-inputs input {
   letter-spacing: 1px;
   color: var(--accent-color);
-  min-width: 8vw;
+  min-width: 5rem;
   padding: 0.25rem;
 }
 
@@ -611,9 +611,89 @@ input:checked + .slider:before {
   opacity: 0.5;
 }
 
-@media only screen and (max-width: 1600px) {
+@media only screen and (min-width: 768px) {
+  .avatar {
+    width: 40vw;
+    height: 40vw;
+  }
+
+  .settings {
+    width: 60vw;
+  }
+}
+
+@media only screen and (min-width: 1280px) {
+  .avatar {
+    width: 25vw;
+    height: 25vw;
+  }
+
+  .settings {
+    width: 50vw;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .avatar {
+    width: 25vw;
+    height: 25vw;
+  }
+}
+
+@media only screen and (min-width: 1280px) {
   .avatar {
     width: 20vw;
     height: 20vw;
+  }
+
+  .settings {
+    width: 40vw;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .avatar {
+    width: 18vw;
+    height: 18vw;
+  }
+}
+
+@media only screen and (min-width: 1920px) {
+  .avatar {
+    width: 15vw;
+    height: 15vw;
+  }
+
+  .settings {
+    width: 30vw;
+  }
+}
+
+@media only screen and (min-width: 1920px) {
+  .avatar {
+    width: 15vw;
+    height: 15vw;
+  }
+}
+
+@media only screen and (min-width: 2560px) {
+  .avatar {
+    width: 10vw;
+    height: 10vw;
+  }
+
+  .settings {
+    width: 25vw;
+  }
+}
+
+@media only screen and (min-width: 3440px) {
+  .avatar {
+    width: 8vw;
+    height: 8vw;
+  }
+
+  .settings {
+    width: 20vw;
   }
 }
