@@ -388,6 +388,7 @@ footer .title h1 {
   width: 70vw;
   height: 100vh;
   padding: 1.5rem;
+  overflow-y: scroll;
 
   background: var(--accent-color);
   transition: all 0.3s ease;
