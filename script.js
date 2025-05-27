@@ -5,15 +5,25 @@ import { themes } from "./data/themedata.js";
 import { sounds } from "./sounds/sounds.js";
 
 /* ===================================================
-  Global Variables
+  Document Elements
 =================================================== */
+// Assets
+const ROOT = document.documentElement;
+const THEMES = themes;
 
-// DOCUMENT ELEMENTS
 // General
 const SITE_TITLE =
   "Chiikawa Timer - A cute pomodoro timer to boost your productivity";
 
 // Timer
+const DEFAULT_DURATION_POMODORO = 25;
+const DEFAULT_DURATION_SHORT_BREAK = 5;
+const DEFAULT_DURATION_LONG_BREAK = 10;
+const TIMER_MODES = {
+  POMODORO: { label: "POMODORO", duration: DEFAULT_DURATION_POMODORO },
+  SHORT_BREAK: { label: "SHORT_BREAK", duration: DEFAULT_DURATION_SHORT_BREAK },
+  LONG_BREAK: { label: "LONG_BREAK", duration: DEFAULT_DURATION_LONG_BREAK },
+};
 const TIMER_MODES_MENU = document.querySelectorAll(".timer-modes .mode");
 const TIMER_DISPLAY = document.querySelector(".timer-display");
 const TASK_INPUT = document.querySelector(".task-input");
@@ -43,32 +53,24 @@ const TASK_HISTORY = document.querySelector(".task-history");
 const DELETE_TASK_HISTORY_BTN = document.querySelector(
   ".delete-task-history-btn"
 );
+const DELETE_USER_SETTINGS_BTN = document.querySelector(
+  ".delete-user-settings-btn"
+);
 const MUTE_TOGGLE = document.querySelector("#mute-toggle");
 const RANDOMIZE_THEME_TOGGLE = document.querySelector(
   "#randomize-theme-toggle"
 );
 
-// ASSETS
-const ROOT = document.documentElement;
-const THEMES = themes;
-
-// TIMER VARIABLES
-const DEFAULT_DURATION_POMODORO = 25;
-const DEFAULT_DURATION_SHORT_BREAK = 5;
-const DEFAULT_DURATION_LONG_BREAK = 10;
-
-const TIMER_MODES = {
-  POMODORO: { label: "POMODORO", duration: DEFAULT_DURATION_POMODORO },
-  SHORT_BREAK: { label: "SHORT_BREAK", duration: DEFAULT_DURATION_SHORT_BREAK },
-  LONG_BREAK: { label: "LONG_BREAK", duration: DEFAULT_DURATION_LONG_BREAK },
-};
-
-let currentTimerMode = TIMER_MODES.POMODORO.label; // Tracks which timer mode is selected
+/* ===================================================
+ App Variables
+=================================================== */
+let currentTimerMode = TIMER_MODES.POMODORO.label;
 let currentTimerMinutes = DEFAULT_DURATION_POMODORO;
 let timerStarted = false;
 let timerInterval;
 let timeRemaining;
 let notificationSound = new Audio(sounds[0].file);
+let currentThemeID = localStorage.getItem("selectedTheme") || 1;
 
 /* ===================================================
  Functions
@@ -125,12 +127,13 @@ const runTimer = () => {
       // Play timer completion sound
       notificationSound.play();
 
-      // Switch theme (if Randomize Theme Toggle is checked)
+      // If Randomize Theme Toggle is checked, switch theme
       if (localStorage.getItem("randomizeTheme") === "true") {
         const randomThemeID = getRandomThemeID();
-        saveThemeToLocalStorage(randomThemeID);
-        highlightThemeThumbnail(randomThemeID);
-        switchTheme(randomThemeID);
+        currentThemeID = randomThemeID;
+        saveThemeToLocalStorage(currentThemeID);
+        highlightThemeThumbnail(currentThemeID);
+        switchTheme(currentThemeID);
       }
     }
   }, 1000);
@@ -298,8 +301,20 @@ const saveThemeToLocalStorage = (id) => {
 };
 
 // Gets a random theme ID
+// const getRandomThemeID = () => {
+//   let randomThemeID = Math.floor(Math.random() * themes.length) + 1;
+//   while (randomThemeID == currentThemeID)
+//     randomThemeID = Math.floor(Math.random() * themes.length) + 1;
+
+//   // return Math.floor(Math.random() * themes.length) + 1;
+//   return randomThemeID;
+// };
+
 const getRandomThemeID = () => {
-  return Math.floor(Math.random() * themes.length) + 1;
+  const availableIDs = themes
+    .map((_, i) => i + 1)
+    .filter((id) => id !== currentThemeID);
+  return availableIDs[Math.floor(Math.random() * availableIDs.length)];
 };
 
 // Switches the current theme to chosen theme
@@ -364,6 +379,7 @@ const createThemeOptionsHTML = () => {
 
         // Set theme to local storage
         const id = selectedTheme.dataset.themeId;
+        currentThemeID = id;
         saveThemeToLocalStorage(id);
 
         // Switch the theme
@@ -453,6 +469,13 @@ const closeSettings = () => {
   SETTINGS_MENU.addEventListener("transitionend", onModalTransitionEnd);
 };
 
+// Deletes all user settings and refreshes app
+const deleteUserSettings = () => {
+  localStorage.clear();
+  // deleteTaskHistoryHTML();
+  window.location.reload();
+};
+
 /* ===================================================
   Page Load Operations
 =================================================== */
@@ -504,11 +527,13 @@ const randomizeTheme =
   JSON.parse(localStorage.getItem("randomizeTheme")) ?? false;
 setRandomizeThemeToggle(randomizeTheme);
 
-// Set user's local theme and highlight theme thumbnail in list, if it exists
-const userTheme = localStorage.getItem("selectedTheme");
-if (userTheme) {
-  switchTheme(userTheme);
-  highlightThemeThumbnail(userTheme);
+// Set app theme
+if (currentThemeID) {
+  switchTheme(currentThemeID);
+  highlightThemeThumbnail(currentThemeID);
+} else {
+  // Highlight the default theme
+  highlightThemeThumbnail(currentThemeID);
 }
 
 /* ===================================================
@@ -632,6 +657,17 @@ DELETE_TASK_HISTORY_BTN.addEventListener("click", () => {
   if (confirm("Are you sure you want to delete your task history?") == true) {
     deleteTaskHistory();
     deleteTaskHistoryHTML();
+  }
+});
+
+DELETE_USER_SETTINGS_BTN.addEventListener("click", () => {
+  // Confirm with user
+  if (
+    confirm(
+      "Are you sure you want to delete your custom settings and task history?"
+    ) == true
+  ) {
+    deleteUserSettings();
   }
 });
 
