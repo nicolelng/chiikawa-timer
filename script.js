@@ -112,7 +112,7 @@ const runTimer = () => {
       updateTimerControlBtnText();
 
       // If a pomodoro was completed, add task to list
-      if (currentTimerMinutes == DEFAULT_DURATION_POMODORO) {
+      if (currentTimerMode === "POMODORO") {
         let task = createTask();
 
         // Save task to local storage
@@ -138,8 +138,6 @@ const runTimer = () => {
 
 // Resets the timer to the current timer mode
 const resetTimer = () => {
-  // if (!timerStarted) return;
-
   // Reset timer values
   timerStarted = false;
   timeRemaining = null;
@@ -174,7 +172,7 @@ const updateTimerControlBtnText = () => {
 };
 
 // Deletes custom timer durations in local storage
-const deleteCustomTimerDurations = () => {
+const deleteCustomTimersLocalStorage = () => {
   localStorage.removeItem("customTimers");
 };
 
@@ -458,7 +456,6 @@ const closeSettings = () => {
 /* ===================================================
   Page Load Operations
 =================================================== */
-console.log("Current notification sound", notificationSound);
 
 // SETTINGS MENU: THEME LIST
 // Generate sounds list in Settings modal
@@ -617,15 +614,16 @@ DURATION_INPUTS.forEach((input) => {
 
 // Deletes custom timers in local storage
 RESET_TIMER_DURATIONS_BTN.addEventListener("click", () => {
-  deleteCustomTimerDurations();
+  // Delete custom timers from local storage
+  deleteCustomTimersLocalStorage();
   resetTimerDurationsToDefault();
-  updateTimerDurationsHTML();
 
   // Reset timer
   resetTimer();
 
-  // Update timer display
-  updateTimerDisplay(currentTimerMinutes * 60);
+  // Update UIs
+  updateTimerDurationsHTML();
+  updateTimerDisplay(TIMER_MODES[currentTimerMode].duration * 60);
 });
 
 // Deletes all task history in local storage
